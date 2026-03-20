@@ -43,7 +43,7 @@ function renderPokemon(data) {
 async function main(){
     form.addEventListener("submit", async(event)=>{
     event.preventDefault()
-    
+    output.textContent = "Loading..."
 
     try {
         const pokeName = nameLookup.value;
@@ -52,7 +52,7 @@ async function main(){
         const data = await getPoke("https://pokeapi.co/api/v2/pokemon/", query);
         renderPokemon(data);
     } catch (error) {
-        
+        output.textContent = "Error: Problem fetching Pokemon"
     }
     
 })
