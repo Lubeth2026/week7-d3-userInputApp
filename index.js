@@ -5,12 +5,13 @@ console.log("Greetings!");
 //Global Variables//
 const form = document.getElementById("lookupForm");
 const output = document.getElementById("output");
-const input = document.getElementById("submit");
+const idLookup = document.getElementById("idLookup");
+const nameLookup = document.getElementById("nameLookup")
 
 //Request GET data Function//
-async function getPoke(url, id) {
+async function getPoke(url, pokemon) {
     try {
-        const res = await fetch(url + id)
+        const res = await fetch(url + pokemon)
 
         if(!res.ok){
             throw new Error("Failed getting Data")
@@ -19,7 +20,7 @@ async function getPoke(url, id) {
         const data = await res.json()
         return data
     } catch (error) {
-        console.error(error)
+        throw error
     }
 }
 function renderPokemon(data) {
@@ -39,9 +40,21 @@ function renderPokemon(data) {
   output.appendChild(name);
   output.appendChild(weight);
 }
-async function main() {
-    const data = await getPoke("https://pokeapi.co/api/v2/pokemon/", "ditto");
-    renderPokemon(data)
+async function main(){
+    form.addEventListener("submit", async(event)=>{
+    event.preventDefault()
     
+
+    try {
+        const pokeName = nameLookup.value;
+        const pokeID = idLookup.value;
+        let query = pokeName || pokeID;
+        const data = await getPoke("https://pokeapi.co/api/v2/pokemon/", query);
+        renderPokemon(data);
+    } catch (error) {
+        
+    }
+    
+})
 }
 main();
